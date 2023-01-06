@@ -1,18 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import NoteDetail from '../components/NoteDetail';
 import { deleteNote, getNote } from '../utils/local-data';
-import { useNavigate } from 'react-router-dom';
+import Page404 from './404';
 
 
 function DetailPageWrapper() {
   const { id } = useParams();
   const navigate = useNavigate();
-  function redirect() {
-    navigate('/')
-  }
-  return <DetailPage id={id} navigate={redirect} />;
+  
+  return <DetailPage id={id} navigate={navigate} />;
 }
 
 class DetailPage extends React.Component {
@@ -29,13 +27,12 @@ class DetailPage extends React.Component {
 
   onDeleteHandler(id) {
     deleteNote(id);
-    const { navigate } = this.props;
-    navigate();
+    this.props.navigate('/');
   }
 
   render() {
     if (this.state.note === undefined) {
-      return <h3>Tidak ada catatan dengan id ini!</h3>;
+      return (<Page404 />);
     }
 
     return (
