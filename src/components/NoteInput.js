@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FiCheck } from 'react-icons/fi';
 
 class NoteInput extends React.Component {
     constructor(props) {
@@ -42,19 +43,19 @@ class NoteInput extends React.Component {
             <form>
                 <div className='add-new-page__input'>
                     <input className="add-new-page__input__title" type="text"
-                        placeholder="Nama"
+                        placeholder="Judul Catatan......"
                         value={this.state.title}
                         onChange={this.onTitleChangeEventHandler} />
 
                     <input
                         className='add-new-page__input__body'
                         type="text"
-                        placeholder="Tag"
+                        placeholder="Isi catatan....."
                         value={this.state.body}
                         onChange={this.onBodyChangeEventHandler} />
                 </div>
                 <div className='add-new-page__action'>
-                    <button className="action" type="button" title="Simpan" onClick={this.onSubmitEventHandler} ></button>
+                    <button className="action" type="button" title="Simpan" onClick={this.onSubmitEventHandler}><FiCheck /></button>
                 </div>
             </form>
         )

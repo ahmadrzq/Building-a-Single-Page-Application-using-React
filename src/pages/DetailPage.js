@@ -2,11 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import NoteDetail from '../components/NoteDetail';
-import { getNote } from '../utils/local-data';
+import { deleteNote, getNote } from '../utils/local-data';
+import { useNavigate } from 'react-router-dom';
+
 
 function DetailPageWrapper() {
   const { id } = useParams();
-  return <DetailPage id={id} />;
+  const navigate = useNavigate();
+  function redirect() {
+    navigate('/')
+  }
+  return <DetailPage id={id} navigate={redirect} />;
 }
 
 class DetailPage extends React.Component {
@@ -16,16 +22,25 @@ class DetailPage extends React.Component {
     this.state = {
       note: getNote(props.id)
     };
+
+    this.onDeleteHandler = this.onDeleteHandler.bind(this);
+  }
+
+
+  onDeleteHandler(id) {
+    deleteNote(id);
+    const { navigate } = this.props;
+    navigate();
   }
 
   render() {
     if (this.state.note === undefined) {
-      return <p>Note is not found!</p>;
+      return <h3>Tidak ada catatan dengan id ini!</h3>;
     }
 
     return (
       <section>
-        <NoteDetail {...this.state.note}/>
+        <NoteDetail {...this.state.note} onDelete={this.onDeleteHandler} />
       </section>
     );
   }
@@ -33,6 +48,7 @@ class DetailPage extends React.Component {
 
 DetailPage.propTypes = {
   id: PropTypes.string.isRequired,
+  navigate: PropTypes.func.isRequired,
 }
 
 export default DetailPageWrapper;
